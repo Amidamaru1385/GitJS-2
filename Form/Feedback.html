@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form>
+    <div>
+      <label>Name</label>
+      <input id="name" placeholder="Enter name">
+    </div>
+    <div>
+      <label>Email address</label>
+      <input id="email" placeholder="Enter email">
+    </div>
+    <div>
+      <label>Phone</label>
+      <input id="tel" placeholder="+7(000)000-0000">
+    </div>
+    <div>
+      <textarea class="text" cols="30" rows="10"></textarea>
+    </div>
+    <button type="submit" class="btn">Submit</button>
+  </form>
+  <script>
+    let name = /^[a-z]+/i;
+    let email = /([a-z]|\d|!|\.)+@mail\.ru/;
+    let tel = /\+(\d)(\(\d{3}\))\d{3}\-\d{4}/;
+    let userText = document.querySelectorAll('input');
+    let btn = document.querySelector("button");
+
+    function stopDefAction(evt) {
+      evt.preventDefault();
+    }
+
+    function changeColor(input) {
+      console.log(input.id);
+      if (input.value.search(eval(input.id)) == -1) {
+        input.style.borderColor = "red";
+      } else {
+        input.style.borderColor = "green";
+      }
+    }
+
+    btn.addEventListener("click", stopDefAction);
+    btn.addEventListener("click", () => {
+      userText.forEach((text) => {
+        changeColor(text);
+      })
+    })
+  </script>
+</body>
+
+</html>
