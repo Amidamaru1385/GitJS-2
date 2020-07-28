@@ -1,74 +1,95 @@
-class ProductList{
-    constructor(container='.products'){
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
+
+class ProductList {
+    constructor(container = '.products') {
         this.container = container;
         this.goods = [];
-        this.allProducts = [];//массив товаров с версткой
-        this._fetchProducts();
-        this.render();//вывод товаров на страницу
+        this.allProducts = []; //массив товаров с версткой
+        this._getProducts()
+            .then(data => {
+                this.goods = [...data];
+                this.render()
+            });
     }
-    _fetchProducts(){
-        this.goods = [
-            {id: 1, title: 'Notebook', price: 2000},
-            {id: 2, title: 'Mouse', price: 20},
-            {id: 3, title: 'Keyboard', price: 200},
-            {id: 4, title: 'Gamepad', price: 50},
-        ];
+    _getProducts() {
+        return fetch(`${API}/catalogData.json`)
+            .then(result => result.json())
+            .catch(error => {
+                console.log(error);
+            })
     }
-    
-    render(){
+
+    render() {
         const block = document.querySelector(this.container);
-        for(let product of this.goods){
+        for (let product of this.goods) {
             const item = new ProductItem(product);
             this.allProducts.push(item);
-            block.insertAdjacentHTML("beforeend",item.render());
+            block.insertAdjacentHTML("beforeend", item.render());
         }
     }
-    ProductsSummary(){
-        let sum  = 0;
-        for(let product of this.goods){
+    ProductsSummary() {
+        let sum = 0;
+        for (let product of this.goods) {
             sum += product.price;
         }
         return sum;
     }
 }
 
-class ProductItem{
-    constructor(product,img=`https://picsum.photos/200/300?random${product.price}`){
-        this.title = product.title;
-        this.id = product.id;
+class ProductItem {
+    constructor(product, img = `https://picsum.photos/200/300?random${product.price}`) {
+        this.title = product.product_name;
+        this.id = product.id_product;
         this.price = product.price;
-        this.img = img; 
+        this.img = img;
     }
-    render(){
-           return `<div class="product-item">
+    render() {
+        return `<div class="product-item">
                 <img src="${this.img}">
                 <h3>${this.title}</h3>
                 <p>${this.price}</p>
-                <button class="buy-btn">Купить</button>
+                <button id="${this.id}" class="buy-btn">Купить</button>
             </div>`
     }
 }
 
 let list = new ProductList();
-console.log(list.ProductsSummary());
 
-class Basket{
-    constructor(){
+class Basket {
+    constructor() {
+    }
+    render() {
 
     }
-    render(){
-        
+    addProduct() {
+        let buttons = document.querySelectorAll("button");
+        buttons.forEach((button) => {
+            if (button.classList.contains("buy-btn")) {
+                button.addEventListener("click", () => {
+                    console.log(button.id);
+                })
+            }
+        })
     }
-    ProductsSummary(){
-        
+    findProduct() {
+        this.buttons.forEach((button) => {
+            // if(button.id_product == )
+        })
     }
+    ProductsSummary() {
+
+    }
+
 }
 
-class BasketItem{
-    constructor(){
+class BasketItem {
+    constructor() {
 
     }
-    render(){
+    render() {
 
     }
 }
+let test = new Basket();
+test.addProduct();
